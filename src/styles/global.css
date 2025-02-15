@@ -1,0 +1,55 @@
+html {
+  
+background-color: #EAEFBD;
+        background-size: cover;
+        background-position: center center;
+  font-family: Roboto;
+  }
+ 
+
+.container {
+    text-align: center;
+    width: 40%;
+}
+
+.drag-drop-area {
+    border: 2px solid #37371f10;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: #37371f11;
+    cursor: pointer;
+    width: 120%;
+    transform: translateY(-100px);
+    margin: 0px auto;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    left: 50%;
+    transition: all 0.3s ease; 
+}
+
+#dragDropArea.dragover {
+  box-shadow: 0 0 20px #ff844b; /* Cyan glow */
+  scale: 1.1;
+  opacity: 0.8;
+}
+
+.drag-drop-area p {
+    margin: 10px 0;
+}
+
+#fileInput {
+    display: none;
+}
+
+#output {
+    margin-top: 20px;
+}
+
+#output img {
+    max-width: 50%;
+    margin-left: 100%;
+    transform: translateY(-100px);
+    height: auto;
+}
+

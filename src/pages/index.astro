@@ -1,11 +1,93 @@
 ---
-import Welcome from '../components/Welcome.astro';
+import '../styles/global.css';
 import Layout from '../layouts/Layout.astro';
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
 ---
 
 <Layout>
-	<Welcome />
+	A HackED 2025 Project
+	<div class="contain">
+		<img src="/public/logo.png" alt="Logo" class="section-image">
+	<div>
+		
+	</div>
+	<body>
+		<div class="container">
+			
+				<div class="drag-drop-area" id="dragDropArea">
+					<p>IMAGE</p>
+				</div>
+			
+
+			<div id="output"></div>
+		</div>
+		<script src="../app/imgUpload.js"></script>
+		<div id="photoCaptureArea">
+			<button id="captureButton">Take Photo</button>
+			<video id="video" width="300" height="200" autoplay></video>
+			<canvas id="canvas" style="display:none;"></canvas>
+			<button id="uploadPhotoButton" style="display:none;">Upload Photo</button>
+		  </div>
+	</body>
+	
+	<div>
+		
+		  
+
+
+
+
+
+
+	</div>
+</div>
 </Layout>
+<div>
+
+
+
+	
+</div>
+
+
+
+<style>
+	.contain{
+		background-color: rgba(255, 255, 255, 0.021); 
+		backdrop-filter: blur(5px);
+		padding: 10%;
+		margin-top: 1%;
+		margin-left: 15%;
+		width: 50%;
+		
+  		
+		border-radius: 30px;
+	}
+	.imgbutton {
+		display: inline-block;
+  		padding: 10px 20px;
+  		font-size: 16px;
+  		text-align: center;
+  		text-decoration: none;
+  		color: rgb(0, 0, 0);
+		background-color: #dfdfdf8c; 
+		border: none;
+		border-radius: 5px; 
+		cursor: pointer;
+		transition: all 0.3s ease; 
+		box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+	}
+	.imgbutton:hover {
+		box-shadow:rgb(255, 255, 255);
+ 		backdrop-filter: invert(100%);
+  		animation: welcomepulse 4.5s infinite ease-in-out; 
+  		background-color: #ffffffc9;
+	}
+	.section-image {
+		transform: translateY(-100px);
+		
+		max-width: 60%;  /* Adjust percentage as needed */
+    	height: auto;
+		
+	}
+  </style>
+

@@ -1,0 +1,120 @@
+<style>
+   * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Lexend Deca", sans-serif;
+}
+
+/* Navigation Bar */
+.navigation {
+  background-color: rgba(83, 83, 83, 0.05);
+  backdrop-filter: blur(10px);
+  display: flex; 
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+  border-radius: 10px;
+  z-index: 999;
+  position: relative;
+  transition: all 0.3s ease;
+  
+}
+
+.left-nav a {
+  font-weight: bold;
+  text-decoration: none;
+  color: #000;
+  transition: transform 0.3s ease;
+}
+
+.right-nav {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+.right-nav a {
+  font-weight: 350;
+  text-decoration: none;
+  color: #000;
+  padding: 10px;
+  transition: transform 0.3s ease;
+}
+.node:hover {
+  transform: scale(1.4);
+}
+.navigation:hover {
+  box-shadow: 3px 3px 0px rgba(0, 0, 0, 0.123);
+  
+
+}
+
+.icon {
+  width: 24px;
+  height: 24px;
+  vertical-align: middle;
+}
+
+/* Hamburger Menu (hidden on desktop) */
+.hamburger {
+  display: none;
+  font-size: 1.5rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #000;
+}
+
+/* Mobile Menu Hidden */
+.right-nav {
+  transition: all 0.3s ease-in-out;
+}
+
+.right-nav.mobile-hidden {
+  display: none;
+  flex-direction: column;
+  background-color: rgba(83, 83, 83, 0.1);
+  position: absolute;
+  top: 100%;
+  right: 10px;
+  border-radius: 10px;
+  padding: 10px;
+  gap: 10px;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .hamburger {
+    display: block;
+  }
+
+  
+}
+
+   </style>
+   
+   
+   
+   <nav class="navigation">
+     <div class="left-nav">
+         <a href="/">2025 | HackED</a>
+        
+     </div>
+     
+     
+     <div class="left-nav">
+       
+         
+     </div>
+   </nav>
+<script>
+  const hamburger = document.querySelector('.hamburger');
+const rightNav = document.querySelector('.right-nav');
+
+
+
+</script>

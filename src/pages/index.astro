@@ -1,48 +1,92 @@
 ---
-import '../styles/global.css';
+
 import Layout from '../layouts/Layout.astro';
+import Footer from '../components/Footer.astro';
 ---
 
+<div class="hero">
+    <img src="/public/logobw.png" alt="Logo" class="logo">
+</div>
+
 <Layout>
-	A HackED 2025 Project
+	
 	<div class="contain">
-		<img src="/public/logo.png" alt="Logo" class="section-image">
+		
 	<div>
 		
 	</div>
 	<body>
-		<div class="container">
+		<div class="shift">
+
 			
-				<div class="drag-drop-area" id="dragDropArea">
-					<p>IMAGE</p>
-				</div>
-			
+				<button id="imgButton" class="button">Upload Image</button>
+    <input id="fileInput" type="file" accept="image/png, image/jpeg" class="hidden" onchange="handleFileUpload(event)" />
+
+    <script>
+        const serverUrl = "https://eedd-142-244-6-66.ngrok-free.app/upload"; // Replace with your actual Ngrok URL
+
+        document.getElementById("imgButton").addEventListener("click", function () {
+            document.getElementById("fileInput").click(); // Open file dialog
+        });
+
+        document.getElementById("fileInput").addEventListener("change", function (event) {
+            const file = event.target.files[0];
+            if (file) {
+                if (file.type === "image/png" || file.type === "image/jpeg") {
+                    uploadFile(file);
+                } else {
+                    alert("Please upload a valid PNG or JPG image.");
+                }
+            }
+        });
+
+        function uploadFile(file) {
+            const formData = new FormData();
+            formData.append("image", file);
+
+            fetch(serverUrl, {
+                method: "POST",
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(`Image uploaded successfully: ${data.fileUrl}`);
+                console.log("Server Response:", data);
+            })
+            .catch(error => {
+                console.error("Upload Error:", error);
+                alert("Failed to upload image.");
+            });
+        }
+    </script>
+
+
+			<button id="uploadButton" class="button">
+				Upload JSON File
+				</button>
+				<input
+				id="fileInput"
+				type="file"
+				accept="application/json"
+				class="hidden"
+				onchange="handleFileUpload(event)"
+				/>
 
 			<div id="output"></div>
+		
+		<script src="../app/imgUpload.jsx"></script>
+		
 		</div>
-		<script src="../app/imgUpload.js"></script>
-		<div id="photoCaptureArea">
-			<button id="captureButton">Take Photo</button>
-			<video id="video" width="300" height="200" autoplay></video>
-			<canvas id="canvas" style="display:none;"></canvas>
-			<button id="uploadPhotoButton" style="display:none;">Upload Photo</button>
-		  </div>
+		 
 	</body>
 	
 	<div>
-		
-		  
-
-
-
-
-
 
 	</div>
 </div>
 </Layout>
 <div>
-
+	<Footer/>
 
 
 	
@@ -51,43 +95,159 @@ import Layout from '../layouts/Layout.astro';
 
 
 <style>
+	.button{
+	
+		box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.229);
+	
+	margin: 1%;
+	color: #000000; /* Soft blue for a modern look */
+    background-color: #ffffff; /* Clean white background */
+    border: 2px dashed #d4d4d499; /* Border to define the button */
+    padding: 10px 20px; /* Comfortable padding */
+    font-size: 16px; /* Readable font size */
+    font-weight: 600; /* Slightly bold text */
+    border-radius: 8px; /* Rounded edges for a soft feel */
+    cursor: pointer; /* Show pointer on hover */
+    transition: all 0.3s ease-in-out; /* Smooth animation */
+	padding-left:30%;
+	padding-right:30%;
+	padding-top:7.5%;
+	padding-bottom:7.5%;
+	transform: translateY(-30%);
+	
+	
+	}
+	.button:hover {
+		border-color: #EA9010; 
+    background-color: #EA9010; /* Change background on hover */
+    color: white; /* White text for contrast */
+    box-shadow: 0 4px 10px #ea8f1099; /* Subtle shadow for depth */
+}
+
+.button:active {
+    background-color: #ea8f1099; /* Darker blue when clicked */
+    
+}
+	
+	.hero {
+transform: translateY(-5%);
+		position: relative;
+    width: 100%;
+    height: 400px;
+    background: linear-gradient(-45deg, #EA9010, #ea4310, #1055ea);
+    background-size: 400% 400%;
+    animation: gradientAnimation 20s ease infinite;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+	border-radius: 10px;
+}
+@keyframes gradientAnimation {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+/* Dark overlay */
+.hero::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+	
+     
+}
+
+/* Logo styling */
+.logo {
+    position: relative;
+    max-width: 40%; /* Adjust size */
+    height: auto;
+    z-index: 2;
+}
+
 	.contain{
-		background-color: rgba(255, 255, 255, 0.021); 
-		backdrop-filter: blur(5px);
+		
 		padding: 10%;
 		margin-top: 1%;
 		margin-left: 15%;
-		width: 50%;
+		width: 5					0%;
 		
   		
 		border-radius: 30px;
 	}
-	.imgbutton {
-		display: inline-block;
-  		padding: 10px 20px;
-  		font-size: 16px;
-  		text-align: center;
-  		text-decoration: none;
-  		color: rgb(0, 0, 0);
-		background-color: #dfdfdf8c; 
-		border: none;
-		border-radius: 5px; 
-		cursor: pointer;
-		transition: all 0.3s ease; 
-		box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
-	}
-	.imgbutton:hover {
-		box-shadow:rgb(255, 255, 255);
- 		backdrop-filter: invert(100%);
-  		animation: welcomepulse 4.5s infinite ease-in-out; 
-  		background-color: #ffffffc9;
-	}
 	.section-image {
-		transform: translateY(-100px);
+		
 		
 		max-width: 60%;  /* Adjust percentage as needed */
     	height: auto;
 		
 	}
+
+	html {
+
+		background-color: rgb(250, 250, 250);
+  font-family: Roboto;
+  }
+ 
+.shift{
+	transform: translateY(-70px);
+}
+.container {
+	
+    text-align: center;
+    width: 40%;
+}
+
+.drag-drop-area {
+    border: 2px dashed #c4c4c486;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: #ffffffbf;
+    cursor: pointer;
+    width: 20%;
+    box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.229);
+    margin: 0px auto;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+	margin-left: 27.5%;
+    transition: all 0.3s ease; 
+}
+
+#dragDropArea.dragover {
+  box-shadow: 0 0 20px #ff844b; /* Cyan glow */
+  scale: 1.1;
+  opacity: 0.8;
+}
+
+.drag-drop-area p {
+    margin: 10px 0;
+}
+
+#fileInput {
+    display: none;
+}
+
+#output {
+    margin-top: 20px;
+}
+
+#output img {
+    max-width: 50%;
+    margin-left: 100%;
+    transform: translateY(-100px);
+    height: auto;
+}
+
+
   </style>
 

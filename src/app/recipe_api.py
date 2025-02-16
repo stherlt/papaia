@@ -80,9 +80,6 @@ def give_all(json: list):
         all_recipes.append(result)
     return all_recipes
 
-example = [{"guess": "waffles"}]
-print(give_all(example))
-
 
 
 

@@ -7,7 +7,7 @@
  
    
     <div class="hero">
-        <img src="/logo.svg" alt="Logo" class="logo">
+        <img src="/public/logo.svg" alt="Logo" class="logo">
     </div>
     <div class="text-box">
         <p>
@@ -26,6 +26,7 @@
                 <!-- Image Upload Button -->
                 <button id="imgButton" class="button">Upload Image</button>
                 <input id="ifileInput" type="file" accept="image/png, image/jpeg" class="hidden" onchange="handleFileUpload(event)" />
+                <div id="spinner" style="display:none;" class="spinner"></div>
 
                 <!-- Image Output -->
                 <div id="output"></div>
@@ -124,7 +125,30 @@ function displayFoodItems(foodItems) {
     text-align: center;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
+.spinner {
+    position: absolute;
+    top: 70%;
+    left: 50%;
+    margin-top: -25px; /* Half the height */
+    margin-left: -25px; /* Half the width */
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #80a280;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 2s linear infinite;
+}
+@media (max-width: 768px) {
+    .spinner {
+        top: 85%; /* Move it lower on small screens */
+    }
+}
 
+/* Spinner animation */
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
 /* Responsive adjustments */
 @media (max-width: 768px) {
     .text-box {
@@ -308,7 +332,7 @@ function displayFoodItems(foodItems) {
     </style>
 <script>
     const serverUrl = "https://fe1d-2001-56a-f033-fb00-29e4-e94a-d7cd-9c2e.ngrok-free.app/upload"; 
-    
+
     document.getElementById("imgButton").addEventListener("click", function () {
         document.getElementById("ifileInput").click();
     });
@@ -325,37 +349,39 @@ function displayFoodItems(foodItems) {
     });
     
     function uploadFile(file) {
-    const formData = new FormData();
-    formData.append("image", file);
+        const formData = new FormData();
+        formData.append("image", file);
 
-    fetch(serverUrl, {
-        method: "POST",
-        body: formData,
-    })
-    .then(response => response.json())  // Ensure response is parsed as JSON
-    .then(data => {
-        console.log("Server Response:", data); // Debugging: Check response format
+        // Show the spinner when the upload starts
+        document.getElementById("spinner").style.display = "block";
 
-        if (!data || typeof data !== "object") {
-            throw new Error("Invalid JSON response from server.");
-        }
+        fetch(serverUrl, {
+            method: "POST",
+            body: formData,
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Hide the spinner when the response is received
+                document.getElementById("spinner").style.display = "none";
 
-        if (data.success && data.file_url) {
-            displayUploadedImage(data.file_url); // Display uploaded image
-        }
-
-        if (data.dishes) {
-            displayDishOptions(data.dishes); // Ensure dishes array exists
-        } else {
-            console.error("No dish data found in response.");
-        }
-    })
-    .catch(error => {
-        console.error("Upload Error:", error);
-        alert("Failed to upload image or process response.");
-    });
-}
-
+                if (data.success) {
+                    displayUploadedImage(data.file_url); // Show uploaded image
+                }
+                displayDishOptions(data); // Show dish options
+            })
+            .catch(error => {
+                // Hide the spinner on error
+                document.getElementById("spinner").style.display = "none";
+                
+                console.error("Upload Error:", error);
+                alert("Failed to upload image or process response.");
+            });
+    }
     
     function displayUploadedImage(imageUrl) {
         const outputDiv = document.getElementById("output");
@@ -438,8 +464,6 @@ function displayFoodItems(foodItems) {
         backButton.style.cursor = "pointer";
         backButton.onclick = () => displayDishOptions([dish]);
 
-       
-
         dish.recipes.forEach(recipe => {
             const recipeCard = document.createElement('div');
             recipeCard.style.marginBottom = "20px";
@@ -487,6 +511,5 @@ function displayFoodItems(foodItems) {
 
             container.appendChild(recipeCard);
         });
-       
     }
 </script>

@@ -7,7 +7,7 @@
  
    
     <div class="hero">
-        <img src="/public/logo.svg" alt="Logo" class="logo">
+        <img src="/logo.svg" alt="Logo" class="logo">
     </div>
     <div class="text-box">
         <p>
@@ -307,7 +307,7 @@ function displayFoodItems(foodItems) {
 
     </style>
 <script>
-    const serverUrl = "https://eedd-142-244-6-66.ngrok-free.app/upload"; 
+    const serverUrl = "https://fe1d-2001-56a-f033-fb00-29e4-e94a-d7cd-9c2e.ngrok-free.app/upload"; 
     
     document.getElementById("imgButton").addEventListener("click", function () {
         document.getElementById("ifileInput").click();
@@ -325,30 +325,37 @@ function displayFoodItems(foodItems) {
     });
     
     function uploadFile(file) {
-        const formData = new FormData();
-        formData.append("image", file);
-    
-        fetch(serverUrl, {
-            method: "POST",
-            body: formData,
-        })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                return response.json();
-            })
-            .then(data => {
-                if (data.success) {
-                    displayUploadedImage(data.file_url); // Show uploaded image
-                }
-                displayDishOptions(data); // Show dish options
-            })
-            .catch(error => {
-                console.error("Upload Error:", error);
-                alert("Failed to upload image or process response.");
-            });
-    }
+    const formData = new FormData();
+    formData.append("image", file);
+
+    fetch(serverUrl, {
+        method: "POST",
+        body: formData,
+    })
+    .then(response => response.json())  // Ensure response is parsed as JSON
+    .then(data => {
+        console.log("Server Response:", data); // Debugging: Check response format
+
+        if (!data || typeof data !== "object") {
+            throw new Error("Invalid JSON response from server.");
+        }
+
+        if (data.success && data.file_url) {
+            displayUploadedImage(data.file_url); // Display uploaded image
+        }
+
+        if (data.dishes) {
+            displayDishOptions(data.dishes); // Ensure dishes array exists
+        } else {
+            console.error("No dish data found in response.");
+        }
+    })
+    .catch(error => {
+        console.error("Upload Error:", error);
+        alert("Failed to upload image or process response.");
+    });
+}
+
     
     function displayUploadedImage(imageUrl) {
         const outputDiv = document.getElementById("output");

@@ -3,14 +3,30 @@
     import Footer from '../components/Footer.astro';
     ---
     <link rel="icon" type="image/png" href="/favicon.png">
-
-    <div class="hero">
-        <img src="/public/logobw.png" alt="Logo" class="logo">
-    </div>
+    <Layout>
+        <!-- Gradient Overlay -->
+    <div class="gradient-overlay"></div>
 
     <Layout>
-        <div class="contain">
-            <div>
+        <!-- Your page content goes here -->
+    </Layout>
+    <div class="hero">
+        <img src="/public/logo.svg" alt="Logo" class="logo">
+    </div>
+    <div class="text-box">
+        <p>
+            <strong>papAIa</strong> is the hero we never knew we needed!  
+            Simply snap a pic of the mysterious food before you, and <strong>BOOM</strong> —  
+            our AI <span class="highlight">scans, analyzes, and determines</span> what it is.
+        </p>
+    
+        <p>
+            But WAIT—there’s more! Not only does <strong>papAIa</strong> identify your meal,  
+            it goes the extra mile and fetches <span class="highlight">multiple recipes </span> using the Spoonacular API!  
+        </p>
+    </div>
+    
+        
                 <!-- Image Upload Button -->
                 <button id="imgButton" class="button">Upload Image</button>
                 <input id="ifileInput" type="file" accept="image/png, image/jpeg" class="hidden" onchange="handleFileUpload(event)" />
@@ -18,12 +34,7 @@
                 <!-- Image Output -->
                 <div id="output"></div>
                 <div id="json"></div>
-
-              
-
-
-
-
+                <div class="contain"></div>
 <script>
 document.getElementById("file-upload").addEventListener("change", function (event) {
     const file = event.target.files[0];
@@ -55,27 +66,86 @@ function displayFoodItems(foodItems) {
         div.innerHTML = `<strong>${item.name}</strong><br>Calories: ${item.calories}`;
         container.appendChild(div);
     });
+
+    window.addEventListener("load", function() {
+        const button = document.getElementById("imgButton");
+        button.style.animation = "fadeIn 1s forwards"; // Apply the fade-in animation
+    });
 }
 </script>
 
 
             </div>
         </div>
+        <div>
+            <Footer />
+        </div>
     </Layout>   
 
-    <div>
-        <Footer />
-    </div>
+   
 
     <style>
+        body {
+    overflow: hidden; /* Prevent scroll during animation */
+}
+
+.gradient-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    background-color: #1d1d1dfa;
+    backdrop-filter: blur(10px);
+    animation: swipeReveal 1s reverse;
+    z-index: 9999; /* Ensure the overlay is on top */
+}
+
+/* Gradient Swipe Animation */
+@keyframes swipeReveal {
+    0% {
+        opacity: 0;
+        transform: scale(0%);
+        border-radius: 6000px;
+    }
+    100% {
+        opacity: 1;
+        transform: scale(200%);
+        
+    }
+}
+        
+        .text-box {
+    width: 50%;
+    margin: 20px auto; /* Centers it horizontally */
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.1); /* Slightly transparent white */
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .text-box {
+        width: 70%;
+    }
+}
+
+@media (max-width: 480px) {
+    .text-box {
+        width: 70%;
+    }
+}
         /* BUTTON STYLES */
         .button {
-
+            z-index: 10000; 
             margin: 10px auto;
-            color: #000;
-            background-color: #f7f6f13a;
-            border: 2px solid #bfc4bf;
-            padding: 12px 20px;
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            padding: 40px 20px;
             font-size: 16px;
             font-weight: 600;
             border-radius: 12px;
@@ -84,17 +154,38 @@ function displayFoodItems(foodItems) {
             text-align: center;
             width: 100%;
             max-width: 300px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.147);
-        }
+            
+}
 
+/* Keyframes for fade-in effect */
+@keyframes fadeIn {
+    0% {
+        
+        opacity: 0;
+    }
+    80% {
+        transform: scale(1);
+        opacity: 0;
+    }
+    90% {
+        transform: scale(1.1);
+        opacity: 1;
+    }
+
+
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
         .button:hover {
         
             border-color: #A3B18A;
             background: linear-gradient(45deg, #A3B18A,#80a280);
-            border-radius: 20px;
+
             animation: gradientAnimation 2s ease infinite;
             transform: scale(1.05);
-            box-shadow: 0 4px 20px #94a775;
+            box-shadow: 0 0px 5px #94a775;
         }
 
         .button:active {
@@ -112,7 +203,7 @@ function displayFoodItems(foodItems) {
             align-items: center;
             justify-content: center;
             box-sizing: border-box;
-            border-radius: 20px;
+            
         }
 
         @keyframes gradientAnimation {
@@ -121,16 +212,33 @@ function displayFoodItems(foodItems) {
             100% { background-position: 0% 50%; }
         }
 
-        /* LOGO */
-        .logo {
-            max-width: 35%;
-            height: auto;
-        }
+       /* Logo Styling */
+.logo {
+  max-width: 35%;
+  height: auto;
+  transition: transform 0.3s ease-in-out;
+}
+.logo:hover {
+  transform: scale(1.05);
+}
+/* Adjust logo size for mobile screens */
+@media (max-width: 768px) {
+  .logo {
+    max-width: 60%;  /* Adjust size for better visibility */
+  }
+}
+
+@media (max-width: 480px) {
+  .logo {
+    max-width: 70%;  /* Slightly larger on very small screens */
+  }
+}
 
         /* PAGE LAYOUT */
         html {
-            background-color: #111111;
+            background-color: #1d1d1d;
             font-family: Roboto, sans-serif;
+            color: white;
         }
 
         .contain {

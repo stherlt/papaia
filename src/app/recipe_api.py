@@ -1,6 +1,7 @@
 import requests
 from dotenv import load_dotenv
 import os
+import json
 
 load_dotenv()
 
@@ -78,7 +79,7 @@ def give_all(json: list):
             "recipes": three_recipes
         }
         all_recipes.append(result)
-    return all_recipes
+    return json.dumps(all_recipes, indent=4)
 
 
 

@@ -9,8 +9,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const reader = new FileReader();
 
     reader.onload = (e) => {
-      const jsonData = JSON.parse(e.target.result);
-      insertDetailsIntoHTML(jsonData); // Insert details after parsing
+      try {
+        const jsonData = JSON.parse(e.target.result);
+        insertDetailsIntoHTML(jsonData); // Insert details after parsing
+      } catch (err) {
+        output.innerHTML = "<p>There was an error parsing the JSON file.</p>";
+      }
     };
 
     reader.readAsText(file);
@@ -27,39 +31,71 @@ document.addEventListener("DOMContentLoaded", () => {
   const insertDetailsIntoHTML = (jsonData) => {
     output.innerHTML = ""; // Clear any previous content
 
-    if (jsonData?.options) {
-      jsonData.options.forEach((option, index) => {
+    if (Array.isArray(jsonData) && jsonData.length > 1) {
+      // Extract the first array (guesses) and the second array (recipes)
+      const guesses = jsonData[0];
+      const recipesData = jsonData[1];
+
+      // Insert guess details
+      guesses.forEach((item) => {
         const foodItem = document.createElement("div");
         foodItem.classList.add("food-item", "p-4", "bg-white", "shadow-md", "rounded-lg", "my-4");
 
-        foodItem.innerHTML = `
-          <div class="item-container">
-            <div class="item">
-              <h2 class="item-name">${option.title}</h2>
-              <img src="${option.image}" alt="${option.title}" class="item-image">
-              <p class="item-description">${option.description}</p>
-              <ul class="list-disc pl-6 mt-2">
-                <li><strong>Cuisine:</strong> ${option.cuisine}</li>
-                <li><strong>Diets:</strong> ${option.diets}</li>
-                <li><strong>Type of Meal:</strong> ${option.typeOfMeal}</li>
-              </ul>
-              <h3 class="text-xl font-semibold mt-4">Recipe:</h3>
-              <ol class="list-decimal pl-6 space-y-2">
-                ${option.recipe.map((step, index) => `<li key="${index}">${step}</li>`).join("")}
-              </ol>
+        if (item.guess) {
+          foodItem.innerHTML = `
+            <div class="item-container">
+              <div class="item">
+                <h2 class="item-name">${item.guess}</h2>
+                <p class="item-cuisine">Cuisine: ${item.cusine}</p>
+                <p class="item-confidence">Confidence: ${item.confidence * 100}%</p>
+              </div>
             </div>
-          </div>
-        `;
-        foodItem.style.opacity = "0";  // Start hidden
-        foodItem.style.transform = "translateY(200px)";  // Slightly off position
+          `;
+        }
+
         output.appendChild(foodItem);
-        
-        // Trigger animation
-        setTimeout(() => {
+      });
+
+      // Insert recipes details
+      recipesData.forEach((recipeObj) => {
+        recipeObj.recipes.forEach((recipe) => {
+          const foodItem = document.createElement("div");
+          foodItem.classList.add("food-item", "p-4", "bg-white", "shadow-md", "rounded-lg", "my-4");
+
+          const recipeItem = document.createElement("div");
+          recipeItem.classList.add("recipe-item", "p-4", "bg-white", "shadow-md", "rounded-lg", "my-4");
+
+          recipeItem.innerHTML = `
+            <div class="recipe-container">
+              <div class="recipe">
+                <h3 class="recipe-title">${recipe.title}</h3>
+                <img src="${recipe.image}" alt="${recipe.title}" class="recipe-image">
+                <p><strong>Cook Time:</strong> ${recipe.cook_time} minutes</p>
+                <p><strong>Servings:</strong> ${recipe.servings}</p>
+                <p><strong>Diets:</strong> ${recipe.diets.join(", ")}</p>
+                
+                <h4 class="text-xl font-semibold mt-4">Ingredients:</h4>
+                <ul class="list-disc pl-6 mt-2">
+                  ${recipe.ingredients.map(ingredient => `<li>${ingredient.name}: ${ingredient.amount}</li>`).join('')}
+                </ul>
+
+                <h4 class="text-xl font-semibold mt-4">Instructions:</h4>
+                <ol class="list-decimal pl-6 space-y-2">
+                  ${recipe.instructions.map(step => `<li>${step.step}</li>`).join('')}
+                </ol>
+              </div>
+            </div>
+          `;
+          foodItem.appendChild(recipeItem);
+          output.appendChild(foodItem);
+
+          // Trigger animation
+          setTimeout(() => {
             foodItem.style.transition = "opacity 2s ease-out, transform 0.5s ease-out";
             foodItem.style.opacity = "1";
             foodItem.style.transform = "translateY(0)";
-        }, 10);
+          }, 10);
+        });
       });
     } else {
       output.innerHTML = "<p>No valid data found in the JSON file.</p>";
@@ -71,53 +107,3 @@ document.addEventListener("DOMContentLoaded", () => {
     }, 100); // Delay to ensure content is rendered before scrolling
   };
 });
-
-
-// Include your CSS within the JSX
-const style = `
-  .item-container {
-  display: flex;
-  justify-content: space-between;
-  gap: 20px;
-  flex-wrap: wrap; /* This allows wrapping if items exceed container width */
-  width: 80%; /* Ensure it doesn't exceed the container's width */
-}
-
-/* Individual item */
-.item {
-  flex: 1 1 30%; /* Each item will take up 30% of the container width */
-  text-align: center;
-  background-color: #ffffffbf;
-  padding: 10px;
-  color: #37371F;
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25); /* Optional: Add shadow */
-  margin: 10px 0; /* Optional: Add margin between items */
-  box-sizing: border-box; /* Ensure padding doesn't affect width */
-}
-
-/* Item name styling */
-.item-name {
-  font-size: 1.5em;
-  margin-bottom: 10px;
-}
-
-/* Image styling */
-.item-image {
-  max-width: 100%;
-  height: auto;
-  border-radius: 8px;
-  margin-bottom: 10px;
-}
-
-/* Description styling */
-.item-description {
-  font-size: 1em;
-
-}
-`;
-
-// Create a style element and append it to the document's head
-const styleElement = document.createElement('style');
-styleElement.innerHTML = style;
-document.head.appendChild(styleElement);

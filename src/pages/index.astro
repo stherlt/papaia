@@ -4,12 +4,8 @@
     ---
     <link rel="icon" type="image/png" href="/favicon.png">
     <Layout>
-        <!-- Gradient Overlay -->
-    <div class="gradient-overlay"></div>
-
-    <Layout>
-        <!-- Your page content goes here -->
-    </Layout>
+ 
+   
     <div class="hero">
         <img src="/public/logo.svg" alt="Logo" class="logo">
     </div>
@@ -86,7 +82,7 @@ function displayFoodItems(foodItems) {
 
     <style>
         body {
-    overflow: hidden; /* Prevent scroll during animation */
+    overflow: auto; /* Prevent scroll during animation */
 }
 
 .gradient-overlay {
@@ -104,7 +100,10 @@ function displayFoodItems(foodItems) {
 
 /* Gradient Swipe Animation */
 @keyframes swipeReveal {
-    0% {
+    0%{
+        transform: translateY(1000px);
+    }
+    1% {
         opacity: 0;
         transform: scale(0%);
         border-radius: 6000px;
@@ -140,7 +139,7 @@ function displayFoodItems(foodItems) {
 }
         /* BUTTON STYLES */
         .button {
-            z-index: 10000; 
+        
             margin: 10px auto;
             color: #ffffff;
             background: rgba(255, 255, 255, 0.1);
@@ -305,6 +304,7 @@ function displayFoodItems(foodItems) {
 .recipe-card li {
     margin-bottom: 5px;
 }
+
     </style>
 <script>
     const serverUrl = "https://eedd-142-244-6-66.ngrok-free.app/upload"; 
@@ -382,16 +382,16 @@ function displayFoodItems(foodItems) {
             dishCard.style.padding = "15px";
             dishCard.style.borderRadius = "10px";
             dishCard.style.boxShadow = "0 4px 8px rgba(0,0,0,0.2)";
-            dishCard.style.background = "#fff";
+            dishCard.style.background = "rgba(255, 255, 255, 0.1)";
 
             const dishTitle = document.createElement('h3');
             dishTitle.textContent = item.guess;
-            dishTitle.style.color = "#333";
+            dishTitle.style.color = "white";
 
             const dishImage = document.createElement('img');
             dishImage.src = item.recipes[0].image; // First recipe image as a preview
             dishImage.alt = item.guess;
-            dishImage.style.width = "100%";
+            dishImage.style.width = "90%";
             dishImage.style.borderRadius = "8px";
             dishImage.style.boxShadow = "0 2px 5px rgba(0,0,0,0.1)";
 
@@ -401,7 +401,7 @@ function displayFoodItems(foodItems) {
             viewButton.style.padding = "10px";
             viewButton.style.border = "none";
             viewButton.style.borderRadius = "5px";
-            viewButton.style.background = "#588157";
+            viewButton.style.background = "rgba(255, 255, 255, 0.1)";
             viewButton.style.color = "white";
             viewButton.style.cursor = "pointer";
             viewButton.onclick = () => displayRecipeDetails(item);
@@ -426,7 +426,7 @@ function displayFoodItems(foodItems) {
         backButton.style.padding = "10px";
         backButton.style.border = "none";
         backButton.style.borderRadius = "5px";
-        backButton.style.background = "#FF5733";
+        backButton.style.background = "rgba(255, 255, 255, 0.1)";
         backButton.style.color = "white";
         backButton.style.cursor = "pointer";
         backButton.onclick = () => displayDishOptions([dish]);
@@ -439,16 +439,16 @@ function displayFoodItems(foodItems) {
             recipeCard.style.padding = "15px";
             recipeCard.style.borderRadius = "10px";
             recipeCard.style.boxShadow = "0 4px 8px rgba(0,0,0,0.2)";
-            recipeCard.style.background = "#fff";
+            recipeCard.style.background = "rgba(255, 255, 255, 0.1)";
 
             const recipeTitle = document.createElement('h2');
             recipeTitle.textContent = recipe.title;
-            recipeTitle.style.color = "#444";
+            recipeTitle.style.color = "white";
             
             const recipeImage = document.createElement('img');
             recipeImage.src = recipe.image;
             recipeImage.alt = recipe.title;
-            recipeImage.style.maxWidth = '100%';
+            recipeImage.style.maxWidth = '90%';
             recipeImage.style.borderRadius = '8px';
 
             const ingredientsTitle = document.createElement('h4');
@@ -480,5 +480,6 @@ function displayFoodItems(foodItems) {
 
             container.appendChild(recipeCard);
         });
+       
     }
 </script>
